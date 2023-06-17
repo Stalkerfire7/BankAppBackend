@@ -41,6 +41,8 @@ func NewAPIServer(listenAddr string) *APIServer {
 func (s *APIServer) Run() {
 	router := mux.NewRouter()
 	router.HandleFunc("/account", makeHTTPHandleFunc(s.handleAccount))
+	router.HandleFunc("/account/{id}", makeHTTPHandleFunc(s.handleGetAccount))
+
 	log.Print("JSON API IS RUNNING ON PORT:", s.listenAddr)
 	http.ListenAndServe(s.listenAddr, router)
 }
@@ -63,9 +65,10 @@ func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error 
 	return fmt.Errorf("method not allowed %s", r.Method)
 }
 func (s *APIServer) handleGetAccount(w http.ResponseWriter, r *http.Request) error {
-	account := NewAccount("Stalker", "Sieben")
-	log.Print("check3")
-	return writeJSON(w, http.StatusOK, account)
+	id := mux.Vars(r)["id"]
+
+	log.Print("check3", id)
+	return writeJSON(w, http.StatusOK, &Account{})
 
 }
 func (s *APIServer) handlecreateAccount(w http.ResponseWriter, r *http.Request) error {
