@@ -46,7 +46,9 @@ func (s *APIServer) Run() {
 }
 
 func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error {
+	log.Print("check1")
 	if r.Method == "GET" {
+		log.Print("check2")
 		return s.handleGetAccount(w, r)
 
 	}
@@ -61,7 +63,10 @@ func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error 
 	return fmt.Errorf("method not allowed %s", r.Method)
 }
 func (s *APIServer) handleGetAccount(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	account := NewAccount("Stalker", "Sieben")
+	log.Print("check3")
+	return writeJSON(w, http.StatusOK, account)
+
 }
 func (s *APIServer) handlecreateAccount(w http.ResponseWriter, r *http.Request) error {
 	return nil
