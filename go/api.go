@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -17,10 +18,6 @@ func writeJSON(w http.ResponseWriter, status int, v any) error {
 type ApiError struct {
 	Error string
 }
-
-type APIServer struct {
-	listenAddr string
-}
 type apiFunc func(http.ResponseWriter, *http.Request) error
 
 func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
@@ -29,6 +26,10 @@ func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 			writeJSON(w, http.StatusBadRequest, ApiError{Error: err.Error()})
 		}
 	}
+}
+
+type APIServer struct {
+	listenAddr string
 }
 
 func NewAPIServer(listenAddr string) *APIServer {
@@ -45,7 +46,19 @@ func (s *APIServer) Run() {
 }
 
 func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	if r.Method == "GET" {
+		return s.handleGetAccount(w, r)
+
+	}
+	if r.Method == "POST" {
+		return s.handlecreateAccount(w, r)
+
+	}
+	if r.Method == "DELETE" {
+		return s.handleDeleteAccount(w, r)
+
+	}
+	return fmt.Errorf("method not allowed %s", r.Method)
 }
 func (s *APIServer) handleGetAccount(w http.ResponseWriter, r *http.Request) error {
 	return nil
@@ -56,6 +69,7 @@ func (s *APIServer) handlecreateAccount(w http.ResponseWriter, r *http.Request) 
 func (s *APIServer) handleDeleteAccount(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
-func (s *APIServer) handleTransfer(w http.ResponseWriter, r *http.Request) error {
-	return nil
-}
+
+//func (s *APIServer) handleTransfer(w http.ResponseWriter, r *http.Request) error {
+//	return nil
+//}
