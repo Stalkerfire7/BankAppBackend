@@ -1,9 +1,18 @@
 package main
 
-func main() {
+import (
+	"fmt"
+	"log"
+)
 
-	server := NewAPIServer(":3000")
-	server.Run()
+func main() {
+	store, err := NewPostgressStore()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%+v\n", store)
+	//server := NewAPIServer(":3000", store)
+	//server.Run()
 }
 
 //18:32 https://www.youtube.com/watch?v=pwZuNmAzaH8
