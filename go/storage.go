@@ -10,7 +10,7 @@ type Storage interface {
 	CreateAccount(*Account) error
 	DeleteAccount(int) error
 	UpdateAccount(*Account) error
-	GetAccountByID(*Account) error
+	GetAccountByID(id int) (*Account, error)
 }
 type PostgressStore struct {
 	db *sql.DB
@@ -29,4 +29,16 @@ func NewPostgressStore() (*PostgressStore, error) {
 	return &PostgressStore{
 		db: db,
 	}, nil
+}
+func (s *PostgressStore) CreateAccount(*Account) error {
+	return nil
+}
+func (s *PostgressStore) UpdateAccount(*Account) error {
+	return nil
+}
+func (s *PostgressStore) DeleteAccount(id int) error {
+	return nil
+}
+func (s *PostgressStore) GetAccountByID(id int) (*Account, error) {
+	return nil, nil
 }
